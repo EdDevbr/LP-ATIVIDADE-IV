@@ -1,10 +1,10 @@
 /*
-Crie uma funÁ„o chamada "calcularMedia" que recebe como par‚metro uma struct "Aluno",
-esta struct ter· informaÁıes como: nome, data de nascimento, duas notas e mÈdia e
-retorna a mÈdia das notas. Em seguida, crie um programa que declare um array de
-5 alunos e utilize a funÁ„o "calcularMedia" para imprimir a mÈdia de cada aluno.
-TambÈm crie uma funÁ„o para verificar se um aluno est· aprovado ou reprovado
-sendo necess·rio mÈdia maior ou igual a 7,0 para aprovaÁ„o.
+Crie uma fun√ß√£o chamada "calcularMedia" que recebe como par√¢metro uma struct "Aluno",
+esta struct ter√° informa√ß√µes como: nome, data de nascimento, duas notas e m√©dia e
+retorna a m√©dia das notas. Em seguida, crie um programa que declare um array de
+5 alunos e utilize a fun√ß√£o "calcularMedia" para imprimir a m√©dia de cada aluno.
+Tamb√©m crie uma fun√ß√£o para verificar se um aluno est√° aprovado ou reprovado
+sendo necess√°rio m√©dia maior ou igual a 7,0 para aprova√ß√£o.
 
 */
 
@@ -12,8 +12,9 @@ sendo necess·rio mÈdia maior ou igual a 7,0 para aprovaÁ„o.
 #include <stdlib.h>
 #include <locale.h>
 #include <string.h>
+
 #define qtdNotas 2
-#define qtdAlunos 2
+#define qtdAlunos 5
 
 struct dados_aluno
 {
@@ -23,44 +24,35 @@ struct dados_aluno
     float media;
 };
 
-float calcularMedia(struct dados_aluno *aluno)
+void calcularMedia(struct dados_aluno aluno[])
 {
-    float media=0, soma = 0;
+    float soma = 0;
     int i, j;
     for (i = 0; i < qtdAlunos; i++)
     {
+        soma = 0;  
         for (j = 0; j < qtdNotas; j++)
         {
             soma += aluno[i].nota[j];
         }
-       
-
-    media = soma / qtdNotas;
-    soma=0;
+        aluno[i].media = soma / qtdNotas; 
     }
-    return media;
-    
-    
 }
 
-char *resultado(struct dados_aluno *aluno)
+void resultado(struct dados_aluno aluno[])
 {
-
-    char result[300];
     int i;
     for (i = 0; i < qtdAlunos; i++)
     {
         if (aluno[i].media >= 7)
         {
-            strcpy(result, "ALUNO APROVADO!");
+            printf(" %s est√° -> APROVADO!\n", aluno[i].nome);
         }
         else
         {
-            strcpy(result, "ALUNO REPROVADO!");
+            printf("Aluno %s est√° -> REPROVADO!\n", aluno[i].nome);
         }
     }
-
-    return result;
 }
 
 int main()
@@ -71,32 +63,34 @@ int main()
     struct dados_aluno aluno[qtdAlunos];
     for (i = 0; i < qtdAlunos; i++)
     {
-        printf("\nDigite o nome do %d∫ aluno:", i + 1);
-        gets(aluno[i].nome);
+        printf("\nDigite o nome do %d¬∫ aluno:", i + 1);
+        fgets(aluno[i].nome, sizeof(aluno[i].nome), stdin);
         printf("\nDigite a data de nascimento:");
-        gets(aluno[i].dataNascimento);
+        fgets(aluno[i].dataNascimento, sizeof(aluno[i].dataNascimento), stdin);
         for (j = 0; j < qtdNotas; j++)
         {
-            printf("\nDigite a %d™ nota:", j + 1);
+            printf("\nDigite a %d¬™ nota:", j + 1);
             scanf("%f", &aluno[i].nota[j]);
         }
         fflush(stdin);
     }
 
-    for (i = 0; i < qtdAlunos; i++)
+    calcularMedia(aluno);
 
+    for (i = 0; i < qtdAlunos; i++)
     {
-        aluno[i].media=calcularMedia(aluno);
         printf("\nNome: %s", aluno[i].nome);
         printf("\nData de Nascimento: %s", aluno[i].dataNascimento);
         for (j = 0; j < qtdNotas; j++)
         {
-            printf("\n %d™ Nota: %.2f", j + 1, aluno[i].nota[j]);
+            printf("\n %d¬™ Nota: %.2f", j + 1, aluno[i].nota[j]);
         }
 
-        printf("\nMÈdia: %.2f", calcularMedia(aluno));
-        printf("\n%s", resultado(aluno));
+        printf("\nM√©dia: %.2f\n", aluno[i].media);
+    resultado(aluno);
     }
+
 
     return 0;
 }
+
